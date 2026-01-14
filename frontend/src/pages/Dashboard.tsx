@@ -52,7 +52,7 @@ export default function Dashboard() {
                 <div className="container mx-auto px-4 py-6">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <Utensils size={32} />
+                            <img src="/nutrimenu-logo.png" alt="NutriMenu UCAB Logo" className="h-20 w-auto object-contain" />
                             <div>
                                 <h1 className="text-2xl font-bold">NutriMenu UCAB</h1>
                                 <p className="text-sm text-ucab-secondary">Alimentación saludable y responsable</p>
