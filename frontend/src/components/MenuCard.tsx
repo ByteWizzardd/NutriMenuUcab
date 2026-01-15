@@ -1,9 +1,10 @@
-import { MenuItem } from '../types/menu';
+import { MenuItem, CapacityStatus } from '../types/menu';
 import { UtensilsCrossed, Users, Package } from 'lucide-react';
+import CapacityChecker from './CapacityChecker';
 
 interface MenuCardProps {
     menu: MenuItem;
-    onCheckCapacity: (menuId: string) => void;
+    onCheckCapacity: (menuId: string) => Promise<CapacityStatus>;
     onPublish?: (menuId: string) => void;
     isRestaurantView?: boolean;
 }
@@ -52,21 +53,19 @@ export default function MenuCard({ menu, onCheckCapacity, onPublish, isRestauran
                 <span>Ocupación: {menu.currentAforo}/{menu.capacity}</span>
             </div>
 
+
             <div className="flex gap-2">
-                <button
-                    onClick={() => onCheckCapacity(menu.id)}
-                    className="btn-primary flex-1"
-                >
-                    Verificar Disponibilidad
-                </button>
+                <div className="flex-1">
+                    <CapacityChecker onCheck={onCheckCapacity} menuId={menu.id} />
+                </div>
 
                 {isRestaurantView && onPublish && (
                     <button
                         onClick={() => onPublish(menu.id)}
                         disabled={menu.isPublished}
                         className={`flex-1 font-medium px-4 py-2 rounded-lg transition-colors ${menu.isPublished
-                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                : 'bg-ucab-accent hover:bg-ucab-accent/90 text-white'
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            : 'bg-ucab-accent hover:bg-ucab-accent/90 text-white'
                             }`}
                     >
                         {menu.isPublished ? 'Publicado' : 'Publicar Menú'}

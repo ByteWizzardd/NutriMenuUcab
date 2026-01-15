@@ -24,10 +24,14 @@ export async function checkCapacity(menuId: string): Promise<CapacityStatus> {
 
     let message: string;
 
-    if (isAvailable) {
-        message = `Local con disponibilidad. ${availableSeats} mesas disponibles.`;
-    } else {
+    if (availableSeats === 0) {
         message = `Local lleno (Capacidad: ${menu.capacity} personas), pide para llevar`;
+    } else if (availableSeats < 5) {
+        message = `Disponibilidad crítica. ¡Apúrate! Solo quedan ${availableSeats} mesas.`;
+    } else if (availableSeats < 10) {
+        message = `Disponibilidad limitada. Quedan ${availableSeats} mesas disponibles.`;
+    } else {
+        message = `Local con disponibilidad. ${availableSeats} mesas disponibles.`;
     }
 
     const status: CapacityStatus = {
