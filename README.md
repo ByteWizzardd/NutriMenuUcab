@@ -80,6 +80,19 @@ NutriMenuUcab/
 
 ## 🛠️ Instalación y Configuración
 
+### 🐳 Ejecución con Docker (Recomendado)
+
+1. **Asegúrate de tener Docker y Docker Compose instalados.**
+2. **Construir y levantar los contenedores:**
+   ```bash
+   docker-compose up --build
+   ```
+3. **Acceder a la aplicación:**
+   - Frontend: `http://localhost:5173`
+   - Backend: `http://localhost:3000`
+
+### 🛠️ Configuración Manual
+
 ### Prerrequisitos
 - Node.js 18+ y npm
 
