@@ -3,7 +3,7 @@ import { menuService } from '../services/api';
 import { MenuItem, Notification, CapacityStatus } from '../types/menu';
 import MenuCard from '../components/MenuCard';
 import NotificationList from '../components/NotificationList';
-import { Bell, Utensils } from 'lucide-react';
+import { Bell, Sparkles } from 'lucide-react';
 
 export default function Dashboard() {
     const [menus, setMenus] = useState<MenuItem[]>([]);
@@ -45,70 +45,83 @@ export default function Dashboard() {
         );
     }
 
+    const publishedMenus = menus.filter(menu => menu.isPublished);
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-            {/* Header */}
-            <header className="bg-ucab-primary text-white shadow-lg">
-                <div className="container mx-auto px-4 py-6">
+        <div className="min-h-screen bg-gray-50">
+            {/* Header - Apple Style: Clean, spacious, glassmorphism */}
+            <header className="bg-white/80 backdrop-blur-xl border-b border-gray-200/50 sticky top-0 z-10">
+                <div className="px-10 py-8">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <img src="/nutrimenu-logo.png" alt="NutriMenu UCAB Logo" className="h-20 w-auto object-contain" />
-                            <div>
-                                <h1 className="text-2xl font-bold">NutriMenu UCAB</h1>
-                                <p className="text-sm text-ucab-secondary">Alimentación saludable y responsable</p>
-                            </div>
+                        <div>
+                            <h1 className="text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
+                                {showNotifications ? 'Notificaciones' : 'NutriMenu'}
+                            </h1>
+                            <p className="text-lg text-gray-500 font-normal">
+                                {showNotifications
+                                    ? 'Mantente al día con las últimas ofertas'
+                                    : 'Descubre opciones saludables y deliciosas'
+                                }
+                            </p>
                         </div>
+
+                        {/* Notification Bell - Apple Style */}
                         <button
                             onClick={() => setShowNotifications(!showNotifications)}
-                            className="relative p-2 hover:bg-ucab-primary/80 rounded-lg transition-colors"
+                            className="relative p-3 hover:bg-gray-100 rounded-full transition-all duration-200"
                         >
-                            <Bell size={24} />
+                            <Bell size={24} className="text-gray-700" />
                             {notifications.length > 0 && (
-                                <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                    {notifications.length}
-                                </span>
+                                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
                             )}
                         </button>
                     </div>
                 </div>
             </header>
 
-            <main className="container mx-auto px-4 py-8">
+            <main className="px-10 py-10">
                 {showNotifications ? (
-                    <div className="max-w-2xl mx-auto">
-                        <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-2xl font-bold text-ucab-primary">Notificaciones</h2>
-                            <button
-                                onClick={() => setShowNotifications(false)}
-                                className="text-sm text-gray-600 hover:text-ucab-primary"
-                            >
-                                Ver menús
-                            </button>
-                        </div>
-                        <NotificationList notifications={notifications} />
-                    </div>
+                    <NotificationList notifications={notifications} />
                 ) : (
                     <>
-                        <div className="mb-8">
-                            <h2 className="text-2xl font-bold text-ucab-primary mb-2">Menús Disponibles</h2>
-                            <p className="text-gray-600">Descubre las opciones del día y verifica disponibilidad</p>
-                        </div>
+                        {publishedMenus.length > 0 ? (
+                            <>
+                                {/* Section Header - Apple Style */}
+                                <div className="mb-8">
+                                    <h2 className="text-2xl font-semibold text-gray-900 mb-2">Menús Disponibles</h2>
+                                    <p className="text-gray-500">Explora las opciones de hoy</p>
+                                </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {menus.filter(menu => menu.isPublished).map((menu) => (
-                                <MenuCard
-                                    key={menu.id}
-                                    menu={menu}
-                                    onCheckCapacity={handleCheckCapacity}
-                                />
-                            ))}
-                        </div>
-
-                        {menus.filter(menu => menu.isPublished).length === 0 && (
-                            <div className="text-center py-12">
-                                <Utensils className="mx-auto mb-4 text-gray-300" size={64} />
-                                <p className="text-gray-500 text-lg">No hay menús publicados en este momento</p>
-                                <p className="text-gray-400 text-sm mt-2">Vuelve más tarde para ver las opciones del día</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                    {publishedMenus.map((menu) => (
+                                        <MenuCard
+                                            key={menu.id}
+                                            menu={menu}
+                                            onCheckCapacity={handleCheckCapacity}
+                                        />
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            /* Empty State - Apple Style: Minimalist & Elegant */
+                            <div className="flex flex-col items-center justify-center py-32">
+                                <div className="mb-8 bg-gray-100 p-8 rounded-3xl">
+                                    <img
+                                        src="/nutrimenu-logo.png"
+                                        alt="NutriMenu UCAB"
+                                        className="w-20 h-20 object-contain opacity-40"
+                                    />
+                                </div>
+                                <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                                    No hay menús disponibles
+                                </h3>
+                                <p className="text-gray-500 text-center max-w-md mb-2">
+                                    Los restaurantes aún no han publicado sus menús del día.
+                                </p>
+                                <div className="flex items-center gap-2 text-sm text-gray-400 mt-4">
+                                    <Sparkles size={16} />
+                                    <span>Vuelve más tarde para ver las opciones</span>
+                                </div>
                             </div>
                         )}
                     </>

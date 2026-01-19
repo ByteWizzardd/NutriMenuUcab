@@ -40,9 +40,9 @@ export default function CapacityChecker({ onCheck, menuId }: CapacityCheckerProp
             <button
                 onClick={handleCheck}
                 disabled={loading}
-                className="btn-primary w-full flex items-center justify-center gap-2"
+                className="w-full bg-ucab-primary hover:bg-ucab-primary/90 text-white font-semibold px-5 py-3 rounded-2xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50"
             >
-                Verificar Disponibilidad
+                {loading ? 'Verificando...' : 'Verificar Disponibilidad'}
             </button>
 
             {/* Modal de Loading - PA: Proceso Asíncrono */}
